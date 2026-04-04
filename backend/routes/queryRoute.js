@@ -7,17 +7,21 @@ const { validateQuery } = require("../utils/validator");
 
 router.post("/", async (req, res) => {
   try {
-    const userQuery = req.body.query;
+    const userQuery = req.body?.query;
 
-    // 1. AI → SQL
+    if (!userQuery) {
+      return res.status(400).json({ error: "Query is required" });
+    }
+
+    // AI → SQL
     const sql = await getSQLFromAI(userQuery);
 
     console.log("Generated SQL:", sql);
 
-    // 2. Validate
+    // Validate
     validateQuery(sql);
 
-    // 3. Execute
+    // Execute
     db.query(sql, (err, result) => {
       if (err) {
         return res.status(500).json({ error: err.message });

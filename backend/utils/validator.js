@@ -5,7 +5,7 @@ function validateQuery(sql) {
     throw new Error("Only SELECT queries allowed");
   }
 
-  const forbidden = ["drop", "delete", "update", "insert", "alter"];
+  const forbidden = ["drop", "delete", "update", "insert", "alter", "--"];
 
   for (let word of forbidden) {
     if (lower.includes(word)) {
